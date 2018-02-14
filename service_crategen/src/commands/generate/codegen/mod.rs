@@ -400,10 +400,11 @@ fn generate_struct<P>(service: &Service,
 {
     let mut derived = vec!["Default", "Debug"];
 
-    // Streaming is implemented with Box<Stream<...>>, so we can't derive Clone.
+    // Streaming is implemented with Box<Stream<...>>, so we can't derive Clone/PartialEq.
     // This affects both the streaming struct itself, and structs which contain it.
     if !streaming && streaming_members(shape).next().is_none() {
         derived.push("Clone");
+        derived.push("PartialEq");
     }
 
     if serialized {
